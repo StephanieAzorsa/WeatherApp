@@ -47,7 +47,16 @@ small {
 
 footer {
   text-align: center;
-  color: #796d6d;
+  color: #716d79;
+}
+
+a {
+  text-decoration: none;
+  color: #4b4064;
+}
+
+a:hover {
+  color: #160d25;
 }
 
 .center-container {
