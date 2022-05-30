@@ -95,6 +95,10 @@ a:hover {
   display: flex;
 }
 
+.icon-weather {
+  width: 100px;
+}
+
 .icon-location {
   margin-top: 11px;
   margin-right: 10px;

@@ -109,22 +109,27 @@ function showWeather(response) {
   document.querySelector("#current-temperature").innerHTML = `${Math.round(
     response.data.main.temp
   )} ºC`;
-
   document.querySelector(
     "#humidity"
   ).innerHTML = `Humidity: ${response.data.main.humidity}%`;
-
   document.querySelector(
     "#wind"
   ).innerHTML = `Wind: ${response.data.wind.speed} km/h`;
-
   document.querySelector(
     "#description"
   ).innerHTML = `${response.data.weather[0].main}`;
-
   document.querySelector("#city").innerHTML = `${response.data.name}`;
   document.querySelector("#departament").innerHTML = `${response.data.name}, `;
   document.querySelector("#country").innerHTML = `${response.data.sys.country}`;
+  document
+    .querySelector("#icon-weather")
+    .setAttribute(
+      "src",
+      `http://openweathermap.org/img/wn/${response.data.weather[0].icon}.png`
+    );
+  document
+    .querySelector("#icon-weather")
+    .setAttribute("alt", `response.data.weather[0].description`);
 
   celsiusTemperature = response.data.main.temp;
 }
@@ -132,7 +137,7 @@ function showWeather(response) {
 function showCurrentLocation(position) {
   let lat = position.coords.latitude;
   let long = position.coords.longitude;
-  let apiKey = "4eb9092a1ec1063ec22057d44d0bacc8";
+  let apiKey = "0f7352eebb0e963e47cf1be0dd037d51";
   let units = "metric";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${apiKey}&units=${units}`;
 
@@ -148,7 +153,7 @@ function showFahrenheitTemperature(event) {
   event.preventDefault();
   let fahrenheitTemperature = (celsiusTemperature * 9) / 5 + 32;
   let temperatureElement = document.querySelector("#current-temperature");
-  temperatureElement.innerHTML = `${Math.round(fahrenheitTemperature)} Kº`;
+  temperatureElement.innerHTML = `${Math.round(fahrenheitTemperature)} ºK`;
 }
 
 function showCelsiusTemperature(event) {
