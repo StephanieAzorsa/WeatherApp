@@ -94,6 +94,10 @@ a:hover {
   display: flex;
 }
 
+.label-temperature {
+  color: #6c757d;
+}
+
 .icon-weather {
   width: 100px;
 }
