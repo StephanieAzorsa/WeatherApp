@@ -30,15 +30,15 @@ button {
   margin: 0 auto;
   display: block;
   background-color: #ffffff;
-  border: 1px solid #160d25;
-  color: #160d25;
+  border: 1px solid #81a8b8;
+  color: #343a3c;
   font-size: 16px;
   transition: all 200ms ease;
 }
 
 button:hover {
   color: #ffffff;
-  background: #160d25;
+  background: #81a8b8;
 }
 
 small {
@@ -52,11 +52,11 @@ footer {
 
 a {
   text-decoration: none;
-  color: #4b4064;
+  color: #305b6c;
 }
 
 a:hover {
-  color: #160d25;
+  color: #81a8b8;
 }
 
 .center-container {
@@ -69,8 +69,7 @@ a:hover {
 }
 
 .general-information {
-  background-color: #160d25;
-  color: #ffffff;
+  background-color: #a4bcc2;
   border-radius: 20px 0 0 20px;
   box-shadow: rgba(37, 39, 89, 0.08) 0 8px 8px 0;
 }
