@@ -87,7 +87,7 @@ function showTime() {
   }
 
   let time = document.querySelector("#current-time");
-  time.innerHTML = `${currentTime}`;
+  time.innerHTML = `Last updated: ${currentTime}`;
   return time;
 }
 
@@ -125,13 +125,109 @@ function showWeather(response) {
     .querySelector("#icon-weather")
     .setAttribute(
       "src",
-      `http://openweathermap.org/img/wn/${response.data.weather[0].icon}.png`
+      `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
     );
+
   document
     .querySelector("#icon-weather")
     .setAttribute("alt", `response.data.weather[0].description`);
 
   celsiusTemperature = response.data.main.temp;
+  getForecast(response.data.coord);
+}
+
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  return days[day];
+}
+
+function formatHour(timestamp) {
+  let date = new Date(timestamp);
+  let hours = date.getHours();
+  if (hours < 10) {
+    hours = `0${hours}`;
+  }
+  let minutes = date.getMinutes();
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+
+  return `${hours}:${minutes}`;
+}
+
+function getForecast(coordinates) {
+  let apiKey = "0f7352eebb0e963e47cf1be0dd037d51";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayForecastDaily);
+  axios.get(apiUrl).then(displayForecastHourly);
+}
+
+function displayForecastDaily(response) {
+  let forecast = response.data.daily;
+  let forecastElement = document.querySelector("#forecast-daily");
+  let forecastHTML = `<div class="row">`;
+  forecast.forEach(function (forecastDay, index) {
+    if (index < 6) {
+      forecastHTML =
+        forecastHTML +
+        `<div class="col-2">
+        <div class="weather-forecast-date">${formatDay(forecastDay.dt)}</div>
+        <img
+          src="http://openweathermap.org/img/wn/${
+            forecastDay.weather[0].icon
+          }@2x.png"
+          alt=""
+        />
+        <div class="weather-forecast-temperatures">
+          <span class="weather-forecast-temperature-max"> ${Math.round(
+            forecastDay.temp.max
+          )}° </span>
+          <span class="weather-forecast-temperature-min"> ${Math.round(
+            forecastDay.temp.min
+          )}° </span>
+        </div>
+      </div>`;
+    }
+  });
+
+  forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
+}
+
+function displayForecastHourly(response) {
+  let forecast = response.data.hourly;
+  let forecastElement = document.querySelector("#forecast-hourly");
+  let forecastHTML = `<div class="row">`;
+  forecast.forEach(function (forecastHour, index) {
+    if (index < 6) {
+      forecastHTML =
+        forecastHTML +
+        `<div class="col-2">
+        <div class="weather-forecast-date">${formatHour(forecastHour.dt * 1000)}
+        </div>
+          <img
+            src="http://openweathermap.org/img/wn/${
+              forecastHour.weather[0].icon
+            }@2x.png"
+            alt=""
+          />
+          <div class="weather-forecast-temperatures">
+            <span class="weather-forecast-temperature-max"> ${Math.round(
+              forecastHour.temp
+            )}° </span>
+            <span class="weather-forecast-temperature-min"> ${Math.round(
+              forecastHour.temp
+            )}° </span>
+          </div>
+        </div>`;
+    }
+  });
+
+  forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
 }
 
 function showCurrentLocation(position) {
@@ -149,14 +245,14 @@ function getCurrentPosition(event) {
   navigator.geolocation.getCurrentPosition(showCurrentLocation);
 }
 
-function showFahrenheitTemperature(event) {
+function buttonFahrenheitTemperature(event) {
   event.preventDefault();
   let fahrenheitTemperature = (celsiusTemperature * 9) / 5 + 32;
   let temperatureElement = document.querySelector("#current-temperature");
   temperatureElement.innerHTML = `${Math.round(fahrenheitTemperature)} ºK`;
 }
 
-function showCelsiusTemperature(event) {
+function buttonCelsiusTemperature(event) {
   event.preventDefault();
   let temperatureElement = document.querySelector("#current-temperature");
   temperatureElement.innerHTML = `${Math.round(celsiusTemperature)} ºC`;
@@ -169,15 +265,17 @@ window.addEventListener("load", function () {
   let form = document.querySelector("#search-form");
   form.addEventListener("submit", searchingCity);
 
+  displayCity("Athens");
+
+  document
+    .querySelector("#fahrenheit")
+    .addEventListener("click", buttonFahrenheitTemperature);
+  document
+    .querySelector("#celsuis")
+    .addEventListener("click", buttonCelsiusTemperature);
   document
     .querySelector("#current-location")
     .addEventListener("click", getCurrentPosition);
 
-  displayCity("Athens");
-
-  let fahrenheitButton = document.querySelector("#fahrenheit");
-  fahrenheitButton.addEventListener("click", showFahrenheitTemperature);
-
-  let celsiusButton = document.querySelector("#celsuis");
-  celsiusButton.addEventListener("click", showCelsiusTemperature);
+  getForecast();
 });

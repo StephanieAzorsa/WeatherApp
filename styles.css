@@ -69,7 +69,7 @@ a:hover {
 }
 
 .general-information {
-  background-color: #a4bcc2;
+  background-color: #8cd9ec;
   border-radius: 20px 0 0 20px;
   box-shadow: rgba(37, 39, 89, 0.08) 0 8px 8px 0;
 }
@@ -94,12 +94,17 @@ a:hover {
   display: flex;
 }
 
-.label-temperature {
+.weather-forecast-temperatures {
+  font-size: 16px;
+  opacity: 0.5;
+}
+
+.weather-forecast-temperature-min {
   color: #6c757d;
 }
 
 .icon-weather {
-  width: 100px;
+  width: 200px;
 }
 
 .icon-location {
